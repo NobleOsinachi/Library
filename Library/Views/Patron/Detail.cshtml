@@ -1,0 +1,20 @@
+﻿@model Library.Models.Patron
+
+@{
+    ViewData["Title"] = "Patron Details";
+}
+<h1>@ViewData["Title"]</h1>
+
+<form action="@Url.Action(" Detail", "Patron" )" method="post">
+    @Html.EditorForModel()
+    <input type="submit" name="name" value="" />
+</form>
+
+<img src="@Url.Content(" ")" alt="Alternate Text" />
+
+
+
+
+
+<script>
+</script>

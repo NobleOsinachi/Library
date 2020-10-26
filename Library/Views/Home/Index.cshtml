@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <h3>Lakeview ILS</h3>
+
+<div class="text-left">
+    <div class="card-deck">
+
+        <div class="card">
+            <img src="~/images/1.png" class="card-img-top img-fluid" data-src="holder.js/100px180/" alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-title">Library Catalog</h4>
+                <small class="card-text">View and manage library assets.</small>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">
+                    <a role="link" class="mdl-button mdl-button--colored" asp-controller="Catalog" asp-action="Index">VIEW CATALOG</a>
+                </small>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="~/images/2.png" class="card-img-top img-fluid" data-src="holder.js/100px180/" alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-title">Patrons</h4>
+                <small class="card-text">View and manage patron data.</small>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">
+                    <a role="link" class="mdl-button mdl-button--colored" asp-controller="Patron" asp-action="Index">VIEW PATRON INDEX</a>
+                </small>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="~/images/3.png" class="card-img-top img-fluid" data-src="holder.js/100px180/" alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-title">Branches</h4>
+                <small class="card-text">View and manage Lakeview branches.</small>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">
+                    <a role="link" class="mdl-button mdl-button--colored" asp-controller="Branch" asp-action="Index">VIEW BRANCH INDEX</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

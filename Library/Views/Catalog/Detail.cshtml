@@ -1,0 +1,147 @@
+﻿@model Library.ViewModels.Catalog.AssetDetailModel;
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<div class="page-header page-heading clearfix detailHeading">
+    <h2 class="text-muted">View Library Item</h2>
+</div>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <img class="detailImage"
+                     src="@Url.Content("~"+Model.ImageUrl.ToString())"
+                     alt="@Model.Title.Replace(' ', '-').ToLower()" />
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <p id="itemTitle">@Model.Title</p>
+            <p id="itemAuthor">@Model.AuthorOrDirector</p>
+            <p id="itemStatus">@Model.Status</p>
+            <p id="itemType">@Model.Type</p>
+            <p id="itemLocation">@Model.CurrentLocation</p>
+
+            @if (Model.Status == Status.Lost)
+            {
+                <p class="text-danger">This item has been lost. It can not be checked out</p>
+                <p><a class="btn btn-lg btn-danger" role="button" asp-controller="Catalog" asp-action="MarkFound" asp-route-id="@Model.AssetId">Mark Item Found</a></p>
+            }
+            @if (Model.Status == Status.CheckedOut)
+            {
+                <p id="itemPatron">Checked Out By: <span class="text-info">@Model.PatronName</span></p>
+                <p><a class="btn btn-lg btn-success" role="button" asp-controller="Catalog" asp-action="CheckIn" asp-route-id="@Model.AssetId">Check In</a></p>
+                <p><a class="btn btn-lg btn-warning" role="button" asp-controller="Catalog" asp-action="Hold" asp-route-id="@Model.AssetId">Place Hold</a></p>
+            }
+            @if (Model.Status == Status.Available)
+            {
+                <p><a class="btn btn-lg btn-info" role="button" asp-controller="Catalog" asp-action="CheckOut" asp-route-id="@Model.AssetId">Check Out</a></p>
+            }
+            @*else if (Model.Status == Status.OnHold){<p class="text-danger">This item is currently on hold.</p>}*@
+        </div>
+        <div class="col-md-4 detailInfo">
+            <table>
+                @if (Model.Type == Discriminator.Book)
+                {
+                    <tr>
+                        <td class="itemLabel">ISBN: </td>
+                        <td class="itemValue">@Model.ISBN</td>
+                    </tr>
+
+                    <tr>
+                        <td class="itemLabel">Call Number: </td>
+                        <td class="itemValue">@Model.DeweyCallNumber</td>
+                    </tr>
+                }
+                <tr>
+                    <td class="itemLabel">Replacement: </td>
+                    <td class="itemValue">$@Model.GetFormattedCost()</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*<input type="range"
+        name="name"
+        value="@Model.Cost"
+        min="@byte.MinValue"
+        max="@byte.MaxValue"
+        step="1"
+        onchange="console.log(value)"
+        bind=""
+        />*@
+
+
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#demo"><h4>Description</h4></button>
+        <div id="demo" class="collapse">
+            <p>@Model.Description;</p>
+        </div>
+    }
+</div>
+
+
+
+@*Tables for CurrentHolds and CheckOut Histories*@
+<div class="row">
+    <div class="col-md-6">
+        <h4>CheckOut History</h4>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Date Loaned</th>
+                    <th>Date Returned</th>
+                    <th>Card Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.CheckOutHistory != null)
+                {
+                    @foreach (var CheckOut in Model.CheckOutHistory)
+                    {
+                        <tr>
+                            <td>@CheckOut.CheckedOut</td>
+                            <td>@CheckOut.CheckedIn</td>
+                            <td>@CheckOut.LibraryCard.Id</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="col-md-6">
+        <h4>Current Holds</h4>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>Hold Placed</th>
+                    <th>Patron</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.CurrentHolds != null)
+                {
+                    @foreach (var CheckOut in Model.CurrentHolds)
+                    {
+                        <tr>
+                            <td>@CheckOut.HoldPlaced</td>
+                            <td>@CheckOut.PatronName</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+
+}

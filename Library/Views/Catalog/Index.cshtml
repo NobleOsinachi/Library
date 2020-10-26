@@ -1,0 +1,66 @@
+﻿@model Library.ViewModels.Catalog.AssetIndexModel
+@*@inject System.Net.Http.HttpClient  HttpClient*@
+
+@section Styles{
+    @*<link href="~/lib/DataTables/datatables.min.css" rel="stylesheet" />*@
+    <link href="~/lib/DataTables/DataTables-1.10.21/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/lib/DataTables/DataTables-1.10.21/css/dataTables.bootstrap4.css" rel="stylesheet" />
+}
+
+@{
+    ViewBag.Title = "Library Catalog Index";
+}
+
+
+<div id="assets">
+    <h3>Library Catalog</h3>
+    <div id="assetsTable">
+        <table class="table table-striped table-hover" id="catalogIndexTable">
+            <thead>
+                <tr class="text-center">
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Author / Director</th>
+                    <th>Dewey Call Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Assets.Count() == 0)
+                {
+                    <tr class="text-center text-danger">
+                        <td colspan="4">There are currently no assets.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var asset in Model.Assets)
+                    {
+                        <tr class="assetRow">
+                            <td class="">
+                                <a asp-controller="Catalog" asp-action="Detail" asp-route-id="@asset.Id">
+                                    <img class="img-thumbnail card-img imageCell"
+                                         src="@asset.ImageUrl"
+                                         alt="@asset.Title.Replace(" "," -").ToLower()" />
+                                </a>
+                            </td>
+                            <td class="">@asset.Title</td>
+                            <td class="">@asset.AuthorOrDirector</td>
+                            <td class="">@asset.DeweyCallNumber</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/DataTables/datatables.min.js"></script>
+    @*<script src="~/lib/DataTables/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>*@
+    <script src="~/lib/DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#catalogIndexTable').DataTable();
+        });
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@model Library.ViewModels.CheckOut.CheckOutModel
+
+
+@{
+    ViewBag.Title = Model.Title;
+}
+<div class="page-header page-heading clearfix detailHeading">
+    <h2 class="text-muted">CheckOut Library Item</h2>
+</div>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <p id="itemTitle"> @Model.Title</p>
+                <img class="detailImage" src="@Model.ImageUrl.ToString()" alt="@Model.Title.Replace(' ', '-').ToLower()" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            @using (Html.BeginForm("PlaceCheckOut", "Catalog", FormMethod.Post, new { }))
+            {
+                @Html.HiddenFor(m => m.AssetId)
+
+                <div class="form-group">
+                    @Html.LabelFor(c => c.LibraryCardId, "Please insert a Library Card Id")
+
+                    @Html.TextBoxFor(m => m.LibraryCardId, new { @class = "form-control", @*required=false*@})
+                    @Html.ValidationMessageFor(m => m.LibraryCardId)
+                    <div class="text-info d-print-none">(Use TypeAhead later to do this by their name)</div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" role="button" class="btn btn-success btn-lg">Check out</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

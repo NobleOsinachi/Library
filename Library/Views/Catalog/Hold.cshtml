@@ -1,0 +1,60 @@
+﻿@model Library.ViewModels.CheckOut.CheckOutModel
+
+
+@{
+    ViewBag.Title = Model.Title;
+    int holds = Model.HoldCount;
+    string PluralCheck(int y, string a, string b)
+    {
+        return (holds == y) ? a : b;
+    }
+}
+<div class="page-header page-heading clearfix detailHeading">
+    <h2 class="text-muted">Place Hold on Library Item</h2>
+</div>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <p id="itemTitle"> @Model.Title</p>
+                <img class="detailImage" src="@Model.ImageUrl.ToString()" alt="@Model.Title.Replace(' ', '-').ToLower()" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            @if (@Model.HoldCount == 0)
+            {
+                <div class="alert alert-info">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <div class="text-info">There are currently no holds on @Model.Title</div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    @*<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>*@
+                    <div class="text-danger">
+                        There @PluralCheck(1, "is", "are") currently <b>@Model.HoldCount</b> @PluralCheck(1, "hold", "holds") in queue for this item.
+                    </div>
+                </div>
+            }
+
+            @using (Html.BeginForm("PlaceHold", "Catalog", FormMethod.Post, new { }))
+            {
+                @Html.HiddenFor(m => m.AssetId)
+
+                <div class="form-group">
+                    @Html.LabelFor(c => c.LibraryCardId, "Please insert a Library Card Id")
+
+                    @Html.TextBoxFor(m => m.LibraryCardId, new { @class = "form-control",type="number", required=true })
+                    @Html.ValidationMessageFor(m => m.LibraryCardId)
+                    (Use TypeAhead later to do this by their name)
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" role="button" class="btn btn-info btn-lg">Place Hold</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

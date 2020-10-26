@@ -1,0 +1,40 @@
+﻿@model Library.ViewModels.CheckOut.CheckOutModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+<form action="@Url.Action("Privacy", "Home")" method="post">
+
+    <div class="editor-label"><label for="AssetId">AssetId</label></div>
+    <div class="editor-field"><input class="text-box single-line" data-val="true" data-val-required="The AssetId field is required." id="AssetId" name="AssetId" type="number" value="0" /> <span class="field-validation-valid" data-valmsg-for="AssetId" data-valmsg-replace="true"></span></div>
+    <div class="editor-label"><label for="ImageUrl">ImageUrl</label></div>
+    <div class="editor-field"><input class="text-box single-line" id="ImageUrl" name="ImageUrl" type="text" value="" /> <span class="field-validation-valid" data-valmsg-for="ImageUrl" data-valmsg-replace="true"></span></div>
+    <div class="editor-label"><label for="Title">Title</label></div>
+    <div class="editor-field"><input class="text-box single-line" id="Title" name="Title" type="text" value="" /> <span class="field-validation-valid" data-valmsg-for="Title" data-valmsg-replace="true"></span></div>
+
+
+
+    <div class="editor-label"><label for="LibraryCardId">LibraryCardId</label></div>
+    <div class="editor-field">
+        <input class="text-box single-line" data-val="true" data-val-required="The LibraryCardId field is required." id="LibraryCardId" name="LibraryCardId" type="text" value="" />
+        <span class="field-validation-valid" data-valmsg-for="LibraryCardId" data-valmsg-replace="true"></span>
+    </div>
+
+
+
+
+    <div class="editor-label"><label for="HoldCount">HoldCount</label></div>
+    <div class="editor-field"><input class="text-box single-line" data-val="true" data-val-required="The HoldCount field is required." id="HoldCount" name="HoldCount" type="number" value="0" /> <span class="field-validation-valid" data-valmsg-for="HoldCount" data-valmsg-replace="true"></span></div>
+    <div class="editor-label"><label for="IsCheckedOut">IsCheckedOut</label></div>
+    <div class="editor-field"><input class="check-box" data-val="true" data-val-required="The IsCheckedOut field is required." id="IsCheckedOut" name="IsCheckedOut" type="checkbox" value="true" /> <span class="field-validation-valid" data-valmsg-for="IsCheckedOut" data-valmsg-replace="true"></span></div>
+
+
+
+
+
+
+    <input type="submit" name="POST" value="POST" />
+</form>
