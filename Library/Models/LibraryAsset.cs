@@ -9,29 +9,28 @@ namespace Library.Models
 
         public LibraryAsset()
         {
-            this.ImageUrl = ImageChecker(ImageUrl);
+            ImageUrl = ImageChecker(ImageUrl);
         }
         public LibraryAsset(int id)
         {
-            this.Id = id;
+            Id = id;
         }
-        public LibraryAsset(double cost, LibraryBranch location, StatusId status, string title, int year, string imageUrl, byte numberOfCopies)
+        public LibraryAsset(double cost, LibraryBranch location, StatusId status, string title, int year, string imageUrl, int numberOfCopies)
         {
-            this.Cost = Convert.ToDecimal(cost);
-            this.Location = location;
-            this.Status = new Status((int)status);
-            this.Title = title;
-            this.Year = (short)year;
-            this.NumberOfCopies = numberOfCopies;
-            this.ImageUrl = ImageChecker(imageUrl);
+            Cost = Convert.ToDecimal(cost);
+            Location = location;
+            Status = new Status(status);
+            Title = title;
+            Year = (short)year;
+            NumberOfCopies = numberOfCopies;
+            ImageUrl = ImageChecker(imageUrl);
         }
 
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
-        [MaxLength(4)]
-        [MinLength(4)]
+        [MinLength(4),MaxLength(4)]
         [Range(0000, 9999)]
         public short Year { get; set; }
         [Required]
@@ -47,7 +46,7 @@ namespace Library.Models
             set => _imageUrl = ImageChecker(value);
         }
         [Range(0, short.MaxValue)]
-        public byte NumberOfCopies { get; set; }
+        public int NumberOfCopies { get; set; }
 
         public LibraryBranch Location { get; set; }
 
@@ -59,5 +58,11 @@ namespace Library.Models
         {
             return string.IsNullOrWhiteSpace(value) ? _defaultImage : value;
         }
+    }
+
+    public struct Discriminator
+    {
+        public const string Book = "Book";
+        public const string Video = "Video";
     }
 }

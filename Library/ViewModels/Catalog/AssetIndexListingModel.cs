@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Library.Data;
 using Library.Models;
-using Library.ViewModels;
 
 namespace Library.ViewModels.Catalog
 {
@@ -9,9 +8,9 @@ namespace Library.ViewModels.Catalog
     {
         public AssetIndexListingModel(LibraryAsset result)
         {
-            this.Id = result.Id;
-            this.ImageUrl = result.ImageUrl;
-            this.Title = result.Title;
+            Id = result.Id;
+            ImageUrl = result.ImageUrl;
+            Title = result.Title;
         }
 
         public AssetIndexListingModel(LibraryAsset result, ILibraryAsset assets) : this(result)
@@ -19,12 +18,12 @@ namespace Library.ViewModels.Catalog
             //this.Id = result.Id;
             //this.ImageUrl = result.ImageUrl;
             //this.Title = result.Title;
-            this.AuthorOrDirector = assets.GetAuthorOrDirector(result.Id);
-            this.DeweyCallNumber = assets.GetDeweyIndex(result.Id);
-            this.Type = assets.GetType(result.Id);
+            AuthorOrDirector = assets.GetAuthorOrDirector(result.Id);
+            DeweyCallNumber = assets.GetDeweyIndex(result.Id);
+            Type = assets.GetType(result.Id);
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [DataType(DataType.ImageUrl)]
 
         public string ImageUrl { get; set; }

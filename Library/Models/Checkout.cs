@@ -18,7 +18,7 @@ namespace Library.Models
             this.Until = GetDefaultCheckOutTime(since);
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [Required]
 
         public LibraryAsset LibraryAsset { get; set; }

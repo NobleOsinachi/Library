@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace Library.Services
         private readonly LibraryContext _context;
         private readonly ILibraryAsset _asset;
         //private IHold _hold;// = new HoldService();
-        private readonly IHold _hold = new HoldService();
-        private static DateTime now;//
+        private readonly IHold _hold;// = new HoldService(_context);
+        //private static DateTime now;
 
 
         public CheckOutService(LibraryContext context, ILibraryAsset asset
@@ -23,6 +24,7 @@ namespace Library.Services
         {
             _context = context;
             _asset = asset;
+            _hold = new HoldService(_context);
             //_hold = hold;
         }
         public void Add(CheckOut newCheckOut)
@@ -101,10 +103,10 @@ namespace Library.Services
         }
         public void MarkFound(int assetId)
         {
-            now = DateTime.Now;
+
             UpdateAssetStatus(assetId, Status.Available);
             RemoveExistingCheckOuts(assetId);
-            CloseExistingCheckOutHistory(assetId, now);
+            CloseExistingCheckOutHistory(assetId, DateTime.Now);
             _context.SaveChanges();
         }
 
@@ -120,7 +122,7 @@ namespace Library.Services
             // Remove any existing CheckOuts on the item
             RemoveExistingCheckOuts(assetId);
             // Close any existing CheckOut history
-            CloseExistingCheckOutHistory(assetId, now);
+            CloseExistingCheckOutHistory(assetId, DateTime.Now);
             // Look for existing holds on the item
             IQueryable<Hold> currentHolds = _context.Holds
                 .Include(c => c.LibraryAsset)
@@ -171,13 +173,13 @@ namespace Library.Services
             if (libraryCard != null)
             {
                 UpdateAssetStatus(assetId, Status.CheckedOut);
-                now = DateTime.Now;
-                CheckOut CheckOut = new CheckOut(item, libraryCard, now);
+
+                CheckOut CheckOut = new CheckOut(item, libraryCard, DateTime.Now);
                 _context.Add(CheckOut);
 
                 /**add a new CheckOut history. This could be handled in a 
                  * shadow table in SQL Server or in a database trigger */
-                CheckOutHistory CheckOutHistory = new CheckOutHistory(item, libraryCard, now);
+                CheckOutHistory CheckOutHistory = new CheckOutHistory(item, libraryCard);
 
                 _context.Add(CheckOutHistory);
                 _context.SaveChanges();
@@ -200,12 +202,14 @@ namespace Library.Services
         /// <param name="libraryCardId"></param>
         public void PlaceHold(int assetId, int libraryCardId)
         {
-            now = DateTime.Now;
             LibraryAsset asset = _asset.GetById(assetId);
-            LibraryCard card = _context.LibraryCards.FirstOrDefault(c => c.Id == libraryCardId);
-            if (card != null)
+            //LibraryCard card = _context.LibraryCards.FirstOrDefault(c => c.Id == libraryCardId);
+            var patron = _context.
+                Patrons.Include(c => c.LibraryCard)
+                .FirstOrDefault(c => c.LibraryCard.Id == libraryCardId);
+            if (patron != null)
             {
-                Hold hold = new Hold(asset, card, now) { };
+                Hold hold = new Hold(asset, patron.LibraryCard, DateTime.Now) { };
                 if (asset.Status.Name == Status.Available)
                 {
                     UpdateAssetStatus(assetId, Status.OnHold);
@@ -214,6 +218,7 @@ namespace Library.Services
                 _context.Add(hold);
                 _context.SaveChanges();
             }
+
         }
 
         /// <summary>

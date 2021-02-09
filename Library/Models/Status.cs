@@ -12,12 +12,12 @@ namespace Library.Models
         public Status()
         {
         }
-        public Status(int id)
+        public Status(StatusId id)
         {
-            this.Id = id;
+            this.Id = (int)id;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [Required]
         public string Name { get; set; }
         [Required]

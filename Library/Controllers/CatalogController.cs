@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Library.Data;
 using Library.Models;
@@ -11,15 +12,23 @@ namespace Library.Controllers
     public class CatalogController : Controller
     {
         private ILibraryAsset _assets { get; }
-        private ICheckOut _CheckOuts { get; }
-        public CatalogController(ILibraryAsset assets, ICheckOut CheckOuts)
+        private ICheckOut _checkOuts { get; }
+        LibraryContext _context;
+
+        public CatalogController(ILibraryAsset assets, ICheckOut checkOuts
+            , LibraryContext context)
         {
             _assets = assets;
-            _CheckOuts = CheckOuts;
+            _checkOuts = checkOuts;
+            _context = context;
+        }
+               
+        public IActionResult Noble()
+        {
+            var x = _context.Genres.ToList();
+            return Json(x);
         }
 
-
-        [AcceptVerbs("GET")]
         public IActionResult Index()
         {
             /**
@@ -58,8 +67,8 @@ namespace Library.Controllers
             LibraryAsset asset = _assets.GetById(id);
             if (asset != null)
             {
-                IEnumerable<AssetHoldModel> currentHolds = _CheckOuts.GetCurrentHolds(id)
-                    .Select(c => new AssetHoldModel(c.Id, _CheckOuts));
+                IEnumerable<AssetHoldModel> currentHolds = _checkOuts.GetCurrentHolds(id)
+                    .Select(c => new AssetHoldModel(c.Id, _checkOuts));
 
 
                 ///move this to an overloaded  constructor
@@ -75,10 +84,10 @@ namespace Library.Controllers
                     AuthorOrDirector = _assets.GetAuthorOrDirector(id),
                     DeweyCallNumber = _assets.GetDeweyIndex(id),
                     Type = _assets.GetType(id),
-                    CheckOutHistory = _CheckOuts.GetCheckOutHistory(id),
+                    CheckOutHistory = _checkOuts.GetCheckOutHistory(id),
                     ISBN = _assets.GetIsbn(id),
-                    LatestCheckOut = _CheckOuts.GetLatestCheckOut(id),
-                    PatronName = _CheckOuts.GetCurrentCheckOutPatron(id),
+                    LatestCheckOut = _checkOuts.GetLatestCheckOut(id),
+                    PatronName = _checkOuts.GetCurrentCheckOutPatron(id),
                     CurrentLocation = _assets.GetCurrentLocation(id).Name,
                     CurrentHolds = currentHolds,
                 };
@@ -108,23 +117,24 @@ namespace Library.Controllers
         [HttpGet]
         public IActionResult MarkLost(int assetId)
         {
-            _CheckOuts.MarkLost(assetId);
+            _checkOuts.MarkLost(assetId);
             return RedirectToAction("Detail", new { id = assetId });
         }
 
         [HttpGet]
         public IActionResult MarkFound(int assetId)
         {
-            _CheckOuts.MarkFound(assetId);
+            _checkOuts.MarkFound(assetId);
             return RedirectToAction("Detail", new { id = assetId });
         }
 
+
         [HttpGet]
-        //[NonAction]
         public IActionResult CheckOut(int id)
         {
+
             LibraryAsset asset = _assets.GetById(id);
-            CheckOutModel model = new CheckOutModel(id, asset, _CheckOuts);
+            CheckOutModel model = new CheckOutModel(id, asset, _checkOuts);
             return View(model);
         }
 
@@ -133,7 +143,7 @@ namespace Library.Controllers
         {
             if (ModelState.IsValid)
             {
-                _CheckOuts.CheckInItem(id);//, libraryCardId);
+                _checkOuts.CheckInItem(id);//, libraryCardId);
                 return RedirectToAction("Detail", routeValues: new { id });
             }
             return RedirectToAction("CheckOut", new { id = id });
@@ -143,9 +153,9 @@ namespace Library.Controllers
         public IActionResult Hold(int id)
         {
             LibraryAsset asset = _assets.GetById(id);
-            CheckOutModel model = new CheckOutModel(id, asset, _CheckOuts)
+            CheckOutModel model = new CheckOutModel(id, asset, _checkOuts)
             {
-                HoldCount = _CheckOuts.GetCurrentHolds(id).Count(),
+                HoldCount = _checkOuts.GetCurrentHolds(id).Count(),
             };
             return View(model);
         }
@@ -155,7 +165,7 @@ namespace Library.Controllers
         {
             if (ModelState.IsValid)
             {
-                _CheckOuts.CheckOutItem(assetId, libraryCardId);
+                _checkOuts.CheckOutItem(assetId, libraryCardId);
                 return RedirectToAction("Detail", new { id = assetId });
             }
             return RedirectToAction("CheckOut", new { id = assetId });
@@ -164,12 +174,18 @@ namespace Library.Controllers
         [HttpPost]
         public IActionResult PlaceHold(int assetId, int libraryCardId)
         {
+
+            var x = _context.LibraryCards;
+
             if (ModelState.IsValid)
             {
-                _CheckOuts.PlaceHold(assetId, libraryCardId);
+                _checkOuts.PlaceHold(assetId, libraryCardId);
                 return RedirectToAction("Detail", new { id = assetId });
             }
-            return RedirectToAction("Hold", new { id = assetId });
+            else
+            {
+                return RedirectToAction("Hold", new { id = assetId });
+            }
         }
     }
 }

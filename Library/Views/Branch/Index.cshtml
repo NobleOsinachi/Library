@@ -1,14 +1,33 @@
-﻿
+﻿@model Library.ViewModels.Branch.BranchIndexModel
 @{
-    ViewBag.Title = "Patron Index";
-    
- }
+    ViewBag.Title = "Branch Index";
+}
 
-@functions{public int Id{ get; set; }void Def() { }}
+<h3>@ViewBag.Title</h3>
 
-@*@Html.DropDownList("NOBLE", "--INITIAL--")*@
-
-
-    <h1>BRANCH</h1>
-
-
+<div id="branchIndex">
+    <table id="branchIndexTable"
+           class="table table-responsive table-striped mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp customTable">
+        <thead>
+            <tr>
+                <th>Branch Name</th>
+                <th>Open Now</th>
+                <th>Number of Assets</th>
+                <th>Number of Patrons</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var branch in Model.Branches)
+            {
+                <tr>
+                    <td class="strongTd">
+                        <a asp-controller="Branch" asp-action="Detail" asp-route-id="@branch.Id">@branch.Name</a>
+                    </td>
+                    <td>@branch.IsOpen</td>
+                    <td>@branch.NumberOfAssets</td>
+                    <td>@branch.NumberOfPatrons</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

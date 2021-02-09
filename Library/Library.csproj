@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Branch\Index.html" />
+    <None Remove="Views\Branch\github stuff.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Views\Branch\Index.html" />
+    <Content Include="Views\Branch\github stuff.html" />
   </ItemGroup>
 
   <ItemGroup>

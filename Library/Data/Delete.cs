@@ -1,27 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Library.Models;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch.Operations;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using static System.Net.WebRequestMethods;
 
 namespace Library.Data
 {
 
     public abstract class BaseClass
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         public string Description { get; set; }
         public StatusId Status { get; set; }
@@ -31,22 +17,35 @@ namespace Library.Data
     {
         public DerivedClass(DateTime dateOfBirth)
         {
-            this.DateOfBirth = dateOfBirth;
-            this.Age = DateTime.Now.Year - dateOfBirth.Year;
+            DateOfBirth = dateOfBirth;
+            Age = DateTime.Now.Year - dateOfBirth.Year;
         }
-        [Range(byte.MinValue, byte.MaxValue)]
+        [Range(int.MinValue, int.MaxValue)]
         public int Age { get; private set; }
         [DataType(DataType.Date)]
-        
+
         public DateTime DateOfBirth { get; set; }
+
+        /*
+         
+          List<DerivedClass> derivedClasses = new List<DerivedClass>()
+{
+new DerivedClass(new DateTime(1998, 03, 25)){Status = StatusId.Available, Description = "Cool calm collected" },
+new DerivedClass(DateTime.Parse("1997-03-30")){Status = StatusId.OnHold, Description = "Testting..." },
+};
+            derivedClasses.ForEach(c => context.Add(c));
+            context.SaveChanges();
+
+         */
+
     }
 
 
     public struct StatusStruct //: Models.Status
     {
-        public const byte Available = (byte)StatusId.Available;
-        public const byte CheckedOut = (byte)StatusId.CheckedOut;
-        public const byte Lost = (byte)StatusId.Lost;
-        public const byte OnHold = (byte)StatusId.OnHold;
+        public const int Available = (int)StatusId.Available;
+        public const int CheckedOut = (int)StatusId.CheckedOut;
+        public const int Lost = (int)StatusId.Lost;
+        public const int OnHold = (int)StatusId.OnHold;
     }
 }

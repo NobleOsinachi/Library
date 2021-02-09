@@ -31,32 +31,27 @@ namespace Library
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.AddSingleton(Configuration);
             services.AddHttpClient<HttpClient>();
 
+            services.AddDbContext<LibraryContext>(options =>
+            options.UseSqlServer(
+            Configuration.GetConnectionString("DefaultConnection")
+            ));
 
-            services.AddScoped<IHold, HoldService>();
-            services.AddScoped<IHold, HoldService>();
+
             services.AddScoped<ILibraryAsset, LibraryAssetService>();
             services.AddScoped<ICheckOut, CheckOutService>();
             services.AddScoped<IPatron, PatronService>();
             services.AddScoped<ICheckOutHistory, CheckOutHistoryService>();
+            services.AddScoped<IHold, HoldService>();
+            services.AddScoped<ILibraryBranch, LibraryBranchService>();
 
-
-
-
-
-
-
-            services.AddDbContext<LibraryContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")
-                    //, null
-                    ));
 
             services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<LibraryContext>();
+            .AddDefaultUI(UIFramework.Bootstrap4)
+            .AddEntityFrameworkStores<LibraryContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -86,8 +81,8 @@ namespace Library
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

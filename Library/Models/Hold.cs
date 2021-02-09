@@ -15,7 +15,7 @@ namespace Library.Models
             this.HoldPlaced = holdPlaced;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         /// <summary>
         /// Item for which a hold has been requested
         /// </summary>

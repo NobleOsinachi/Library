@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using Library.Data;
 using Library.Models;
 using Library.ViewModels.Patron;
@@ -20,7 +22,7 @@ namespace Library.Controllers
         public IActionResult Index()
         {
             IEnumerable<PatronDetailModel> patronModel = _patron.GetAll()
-                .Select(p => new PatronDetailModel(p) { });
+            .Select(p => new PatronDetailModel(p) { });
             PatronIndexModel model = new PatronIndexModel() { Patrons = patronModel, };
             return View(model);
         }
@@ -28,19 +30,38 @@ namespace Library.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            Patron pat = _patron.GetById(id);
+            Patron patron = _patron.GetById(id);
+            if (patron == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-            return View(pat);
+            PatronDetailModel model = new PatronDetailModel(patron)
+            {
+                //LastName = patron.LastName,
+                //FirstName = patron.FirstName,
+                //Address = patron.Address,
+                //HomeLibraryBranch = patron.HomeLibraryBranch.Name,
+                //MemberSince = patron.LibraryCard.Created,
+                //OverdueFees = patron.LibraryCard.Fees,
+                //LibraryCardId = patron.LibraryCard.Id,
+                //TelephoneNumber = patron.TelephoneNumber,
+                AssetsCheckedOut = _patron.GetCheckOuts(id).ToList() ?? new List<CheckOut>(),
+                Holds = _patron.GetHolds(id).ToList() ?? new List<Hold>(),
+            };
+            return View(model);
         }
 
-        [HttpPost]
-        public IActionResult Detail(Patron patron)
-        {
-            //Color[] cols = new Color[] { Color.Red, Color.White, Color.Orange, Color.Yellow, Color.Blue, Color.Green, Color.Black, Color.Indigo, Color.Violet, Color.Sienna, Color.PaleTurquoise };
+        //[HttpPost]
+        //public IActionResult Detail(Patron patron)
+        //{
+        //    //Color[] cols = new Color[] { Color.Red, Color.White, Color.Orange, Color.Yellow, Color.Blue, Color.Green, Color.Black, Color.Indigo, Color.Violet, Color.Sienna, Color.PaleTurquoise };
 
-            _patron.Update(patron);
-            return View();
-        }
+        //    _patron.Update(patron);
+        //    return View();
+        //}
+
+
 
 
 

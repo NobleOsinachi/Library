@@ -1,18 +1,23 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Library.Services;
+using Library.Data;
 
 namespace Library.Validations
 {
     public class ValidLibraryCardAttribute : ValidationAttribute
     {
-        private PatronService _patron = new PatronService();
+        private readonly LibraryContext _context;
+        public ValidLibraryCardAttribute()
+        {
+            _context = new LibraryContext();
+        }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var x = _patron.GetAll()
-                .FirstOrDefault(c => c.LibraryCard.Id == Convert.ToInt32(value));
+            Models.Patron x = _context.Patrons.Where(c => c.LibraryCard.Id == (int)value)
+                            //.FirstOrDefault();
+                            .FirstOrDefault(c => c.LibraryCard.Id == Convert.ToInt32(value));
 
             if (x == null)
             {

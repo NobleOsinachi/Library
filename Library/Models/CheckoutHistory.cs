@@ -7,15 +7,15 @@ namespace Library.Models
     {
         public CheckOutHistory(int id)
         {
-            this.Id = id;
+            Id = id;
         }
-        public CheckOutHistory(LibraryAsset libraryAsset, LibraryCard libraryCard, DateTime now)
+        public CheckOutHistory(LibraryAsset libraryAsset, LibraryCard libraryCard)
         {
-            this.LibraryAsset = libraryAsset;
-            this.LibraryCard = libraryCard;
-            this.CheckedOut = now;
+            LibraryAsset = libraryAsset;
+            LibraryCard = libraryCard;
+            CheckedOut = DateTime.Now;
         }
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [Required]
         public LibraryAsset LibraryAsset { get; set; }
         [Required]

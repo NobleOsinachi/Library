@@ -12,20 +12,13 @@ using Library.Data;
 
 namespace Library.Controllers
 {
-
-    
-
     public class HomeController : Controller
     {
-               
         private readonly IPatron _patron;
-        
         public HomeController(IPatron patron)
         {
             _patron = patron;
         }
-
-
 
         public IActionResult Index()
         {

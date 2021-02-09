@@ -12,7 +12,7 @@ namespace Library.Models
             this.Id = id;
 
         }
-        public BranchHour(LibraryBranch branchId, byte closeTime, byte dayOfWeek, byte openTime)
+        public BranchHour(LibraryBranch branchId, int closeTime, DayOfWeek dayOfWeek, int openTime)
         {
             this.Branch = branchId;
             this.DayOfWeek = dayOfWeek;
@@ -20,14 +20,15 @@ namespace Library.Models
             this.CloseTime = closeTime;
 
         }
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public LibraryBranch Branch { get; set; }
         [Range(0, 6)]
-        public byte DayOfWeek { get; set; }
+        //public int DayOfWeek { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
         [Range(0, 23)]
-        public byte OpenTime { get; set; }
+        public int OpenTime { get; set; }
         [Range(0, 23)]
-        public byte CloseTime { get; set; }
+        public int CloseTime { get; set; }
     }
 }
 

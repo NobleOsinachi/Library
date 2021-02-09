@@ -32,8 +32,7 @@ namespace Library.ViewModels.CheckOut
         public string ImageUrl { get; set; }
         public string Title { get; set; }
 
-        [Required]
-        [ValidLibraryCard]//((PatronService)_patron)]
+        [Required, ValidLibraryCard]
         //[StringLength(4,ErrorMessage ="Enter at least 4 digits")]
         public string LibraryCardId { get; set; }
         /// <summary>

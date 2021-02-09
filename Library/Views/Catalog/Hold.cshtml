@@ -34,7 +34,7 @@
                 <div class="alert alert-danger">
                     @*<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>*@
                     <div class="text-danger">
-                        There @PluralCheck(1, "is", "are") currently <b>@Model.HoldCount</b> @PluralCheck(1, "hold", "holds") in queue for this item.
+                        There @PluralCheck(1, "is", "are") currently <b><span class="badge">@Model.HoldCount</span></b> @PluralCheck(1, "hold", "holds") in queue for this item.
                     </div>
                 </div>
             }

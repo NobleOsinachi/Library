@@ -1,6 +1,57 @@
 ﻿@model Library.ViewModels.Patron.PatronIndexModel;
 @{
-    ViewBag.Title = "Patrons";
+    ViewBag.Title = "Patron Index";
 }
 
-<h1>PATRONS</h1>
+<h3>@ViewBag.Title</h3>
+@section Styles{
+    <link href="~/lib/DataTables/DataTables-1.10.21/css/dataTables.bootstrap4.css" rel="stylesheet" />
+}
+
+<div id="patronIndex">
+    <table id="patronIndexTable" class="mdl-data-table mdl-data-table__select table customTable table-hover">
+        <thead>
+            <tr>
+                <th>Profile Link</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Library Card Id</th>
+                <th>Overdue Fees</th>
+                <th>Home Library</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var patron in Model.Patrons)
+            {
+                string profilePhoto = "/images/patrons/" + @patron.Id + ".jpg";
+                <tr>
+                    <td>
+                        <a asp-controller="Patron" asp-action="Detail" asp-route-id="@patron.Id">
+                            <img class="figure-img img-thumbnail img-fluid "
+                                 width="100" height="100"
+                                 
+                                 src="@profilePhoto" alt="" />
+                        </a>
+                    </td>
+                    <td>@patron.LastName</td>
+                    <td>@patron.FirstName</td>
+                    <td>@patron.LibraryCardId</td>
+                    <td>@patron.OverdueFees</td>
+                    <td>@patron.HomeLibraryBranch</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/lib/DataTables/datatables.min.js"></script>
+    @*<script src="~/lib/DataTables/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>*@
+    <script src="~/lib/DataTables/DataTables-1.10.21/js/dataTables.bootstrap4.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('table').DataTable();
+        });
+    </script>
+}

@@ -29,7 +29,7 @@ namespace Library.Models
             this.Description = description;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [Required]
         [StringLength(30, ErrorMessage = "Limit Branch Name to 30 characters.")]
         public string Name { get; set; }

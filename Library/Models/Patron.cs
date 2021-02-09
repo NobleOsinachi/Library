@@ -7,10 +7,7 @@ namespace Library.Models
 {
     public class Patron
     {
-        public Patron()
-        {
-
-        }
+        public Patron() { }
         public Patron(int id)
         {
             Id = id;
@@ -27,7 +24,7 @@ namespace Library.Models
         }
 
         [HiddenInput]
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         [ReadOnly(true)]
@@ -49,5 +46,7 @@ namespace Library.Models
         public static string PrintFullName(Patron patron) { return patron != null ? patron.FirstName + " " + patron.LastName : string.Empty; }
 
         //public string PrintFullName(Patron patron) { return patron != null ? patron.FirstName + " " + patron.LastName : string.Empty; }
+
+
     }
 }

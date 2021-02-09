@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Library.Data;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Library
 {
@@ -24,7 +25,6 @@ namespace Library
                 {
                     var context = services.GetRequiredService<LibraryContext>();
                     DbInitializer.Initialize(context);
-
                 }
                 catch (Exception ex)
                 {

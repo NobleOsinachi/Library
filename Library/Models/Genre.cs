@@ -15,10 +15,10 @@ namespace Library.Models
         {
             this.Id = (int)id;
         }
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public string Name { get; set; }
     }
-    public enum GenreId : byte
+    public enum GenreId : int
     {
         /*["Unknown", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy", 
         "FilmNoir", "Horror", "Love", "Musical", "Mystery", "Romance", "SciFi", "Thriller", "War", "Western"]*/
