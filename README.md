@@ -34,13 +34,13 @@ To set up the LakeView Library Management System locally, follow these steps:
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/lakeview-library.git
+git clone https://github.com/NobleOsinachi/library.git
 ```
 
 2. Install the necessary dependencies:
 
 ```bash
-cd lakeview-library
+cd library
 dotnet restore
 ```
 
@@ -55,7 +55,7 @@ dotnet ef database update
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "your_connection_string_here"
+    "DefaultConnection": "YOUR_CONNECTION_STRING"
   }
 }
 ```
@@ -71,7 +71,7 @@ The application will be accessible at `http://localhost:5000` by default.
 ## Usage
 
 1. Navigate to the LakeView Library Management System portal in your web browser.
-2. Log in with your credentials if you are a staff member or sign up as a new member if you are a library user.
+2. Log in with your credentials if you are a Patron or sign up as a new member if you are a library user. 
 3. Use the intuitive interface to perform various tasks like searching for books, borrowing, returning, and managing member information.
 
 ## Contributing
