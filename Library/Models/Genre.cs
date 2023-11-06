@@ -20,8 +20,11 @@ namespace Library.Models
     }
     public enum GenreId : int
     {
-        /*["Unknown", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy", 
-        "FilmNoir", "Horror", "Love", "Musical", "Mystery", "Romance", "SciFi", "Thriller", "War", "Western"]*/
+        /*
+        ["Unknown", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy", 
+        "FilmNoir", "Horror", "Love", "Musical", "Mystery", "Romance", "SciFi", "Thriller", "War", "Western"]
+        */
+        
         Unknown = 1,
         Action,
         Adventure,
